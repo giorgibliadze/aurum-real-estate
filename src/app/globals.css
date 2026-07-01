@@ -69,3 +69,15 @@ body {
   border-radius: 9999px;
   backdrop-filter: blur(4px);
 }
+
+/* "Download PDF" uses the browser's print flow — hide chrome, keep content readable. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #111111;
+  }
+}

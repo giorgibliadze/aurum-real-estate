@@ -6,12 +6,6 @@ export const STATUS_COLORS: Record<ApartmentStatus, string> = {
   sold: "#f0554d",
 };
 
-export const STATUS_LABELS: Record<ApartmentStatus, string> = {
-  available: "თავისუფალი",
-  reserved: "დაჯავშნილი",
-  sold: "გაყიდული",
-};
-
 export interface Point {
   x: number;
   y: number;
@@ -20,11 +14,16 @@ export interface Point {
 export interface Apartment {
   id: string;
   number: string;
+  /** 1-based running count across the whole building — used for display, e.g. "#8-23". */
+  sequence: number;
   floor: number;
   block: "A" | "B";
   rooms: number;
   bathrooms: number;
+  /** Total area in m², including balcony. */
   area: number;
+  /** Living (interior, excluding balcony) area in m². */
+  livingArea: number;
   balconyArea: number;
   price: number;
   pricePerM2: number;
@@ -35,18 +34,25 @@ export interface Apartment {
   galleryImages: string[];
 }
 
-export const TOTAL_FLOORS = 15;
+/**
+ * Pixel-verified against building-hero.jpg (dark-band + edge detection, not a
+ * guess): the real facade shows exactly 9 visible balcony floor rows between
+ * the roofline and the ground-floor canopy. Forcing more slices than that
+ * would bisect real windows/balconies — see project memory for the analysis.
+ */
+export const TOTAL_FLOORS = 9;
 
 /**
- * Facade calibration reused from the hero exterior photo: the residential
- * facade spans x 35%-64%, from y 14.6% (roof line) to y 79% (ground floor).
- * Divided into 15 equal floor bands, each split into block A (left) / B (right).
+ * Facade calibration from the hero exterior photo: the residential facade
+ * spans x 35%-64%, from y 14.6% (roof line) to y 78.8% (ground floor).
+ * Divided into 9 floor bands (one per real balcony row), each split into
+ * block A (left) / B (right).
  */
 const FACADE_LEFT = 35;
 const FACADE_RIGHT = 64;
 const FACADE_MID = (FACADE_LEFT + FACADE_RIGHT) / 2;
 const FACADE_TOP = 14.6;
-const FACADE_BOTTOM = 79.0;
+const FACADE_BOTTOM = 78.8;
 const GAP = 0.4;
 const PITCH = (FACADE_BOTTOM - FACADE_TOP) / TOTAL_FLOORS;
 
@@ -97,6 +103,7 @@ function buildApartments(): Apartment[] {
       const bathrooms = rooms >= 3 ? 2 : 1;
       const area = Math.round((ROOM_BASE_AREA[rooms] + (floor % 3) * 2.5) * 10) / 10;
       const balconyArea = Math.round((3.5 + rooms * 1.8) * 10) / 10;
+      const livingArea = Math.round((area - balconyArea * 0.6) * 10) / 10;
       const pricePerM2 = Math.round((2100 + floor * 22 + (block === "B" ? 15 : 0)) / 10) * 10;
       const price = Math.round((area * pricePerM2) / 100) * 100;
 
@@ -107,11 +114,13 @@ function buildApartments(): Apartment[] {
       apartments.push({
         id: `floor-${floor}-${block}`,
         number: `${floor}${block === "A" ? "01" : "02"}`,
+        sequence: index + 1,
         floor,
         block,
         rooms,
         bathrooms,
         area,
+        livingArea,
         balconyArea,
         price,
         pricePerM2,
@@ -139,3 +148,19 @@ export const AREA_BOUNDS: [number, number] = [
   Math.min(...APARTMENTS.map((a) => a.area)),
   Math.max(...APARTMENTS.map((a) => a.area)),
 ];
+
+export function getApartmentById(id: string): Apartment | undefined {
+  return APARTMENTS.find((a) => a.id === id);
+}
+
+export function getSimilarApartments(apartment: Apartment, count = 3): Apartment[] {
+  const sameRooms = APARTMENTS.filter(
+    (a) => a.id !== apartment.id && a.rooms === apartment.rooms,
+  );
+  if (sameRooms.length >= count) return sameRooms.slice(0, count);
+
+  const fallback = APARTMENTS.filter(
+    (a) => a.id !== apartment.id && !sameRooms.includes(a),
+  );
+  return [...sameRooms, ...fallback].slice(0, count);
+}

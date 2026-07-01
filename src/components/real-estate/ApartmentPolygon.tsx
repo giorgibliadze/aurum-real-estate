@@ -1,5 +1,6 @@
 "use client";
 
+import { useI18n } from "@/i18n/context";
 import { STATUS_COLORS, type Apartment } from "@/data/apartments";
 
 interface ApartmentPolygonProps {
@@ -23,6 +24,7 @@ export function ApartmentPolygon({
   onHover,
   onSelect,
 }: ApartmentPolygonProps) {
+  const { dict } = useI18n();
   const color = STATUS_COLORS[apartment.status];
   const points = toPolygonPoints(apartment.polygonPoints);
 
@@ -36,7 +38,7 @@ export function ApartmentPolygon({
       role="button"
       tabIndex={isDimmed ? -1 : 0}
       aria-pressed={isSelected}
-      aria-label={`ბინა ${apartment.number}, სართული ${apartment.floor}, ბლოკი ${apartment.block}`}
+      aria-label={`${dict.selector.apartmentWord} ${apartment.number}, ${dict.apartmentFields.floor} ${apartment.floor}, ${dict.apartmentFields.block} ${apartment.block}`}
       onMouseEnter={() => !isDimmed && onHover(apartment.id)}
       onMouseLeave={() => onHover(null)}
       onFocus={() => !isDimmed && onHover(apartment.id)}
