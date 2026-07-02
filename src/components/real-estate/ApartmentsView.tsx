@@ -62,6 +62,11 @@ export function ApartmentsView() {
     if (id) setSelectedApartmentId(id);
   };
 
+  const handleSelectFloorFromBuilding = (floor: number) => {
+    setSelectedFloor(floor);
+    setSelectedApartmentId(null);
+  };
+
   const handleOpenApartment = (id: string) => {
     router.push(`/${locale}/apartments/${id}`);
   };
@@ -105,6 +110,8 @@ export function ApartmentsView() {
               isDimmed={isDimmed}
               selectedApartmentId={selectedApartmentId}
               hoveredApartmentId={hoveredApartmentId}
+              selectedFloor={selectedFloor}
+              onSelectFloor={handleSelectFloorFromBuilding}
               onHoverApartment={handleHoverApartment}
               onSelectApartment={handleOpenApartment}
             />

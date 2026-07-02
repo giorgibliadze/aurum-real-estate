@@ -34,7 +34,14 @@ export function ThumbnailCarousel({ images, activeId, onSelect }: ThumbnailCarou
                 : "border-white/10 opacity-70 hover:opacity-100",
             )}
           >
-            <Image src={image.src} alt={label} fill sizes="112px" className="object-cover" />
+            <Image
+              src={image.src}
+              alt={label}
+              fill
+              unoptimized={image.src.endsWith(".svg")}
+              sizes="112px"
+              className="object-cover"
+            />
             <span className="absolute inset-x-0 bottom-0 bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">
               {label}
             </span>

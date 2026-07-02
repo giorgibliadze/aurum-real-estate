@@ -13,7 +13,7 @@ export interface BuildingImage {
  * it is not pixel-recalibrated per angle (see project memory notes).
  */
 export const BUILDING_IMAGES: BuildingImage[] = [
-  { id: "hero", src: "/images/real-estate/exterior/building-hero.jpg" },
+  { id: "hero", src: "/images/real-estate/exterior/lashas-background.svg" },
   { id: "angle1", src: "/images/real-estate/exterior/building-angle-1.jpg" },
   { id: "angle2", src: "/images/real-estate/exterior/building-angle-2.jpg" },
   { id: "angle3", src: "/images/real-estate/exterior/building-angle-3.jpg" },
