@@ -7,7 +7,7 @@ import { useI18n } from "@/i18n/context";
 import type { BuildingImage } from "@/data/buildingImages";
 
 interface ThumbnailCarouselProps {
-  images: BuildingImage[];
+  images: readonly BuildingImage[];
   activeId: string;
   onSelect: (id: string) => void;
 }

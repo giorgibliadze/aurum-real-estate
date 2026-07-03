@@ -13,8 +13,9 @@ interface InteractiveBuildingProps {
   floorCount: number;
   overlayViewBox: string;
   floorOverlays: readonly LashasFloorPath[];
+  viewerClassName: string;
   selectedFloor: number | null;
-  enabledFloors: number[];
+  enabledFloors: readonly number[];
   onSelectFloor: (floor: number) => void;
 }
 
@@ -28,6 +29,7 @@ export function InteractiveBuilding({
   floorCount,
   overlayViewBox,
   floorOverlays,
+  viewerClassName,
   selectedFloor,
   enabledFloors,
   onSelectFloor,
@@ -37,7 +39,7 @@ export function InteractiveBuilding({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hoveredFloor, setHoveredFloor] = useState<number | null>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
-  const usesLashasPaths = imageSrc.includes("lashas-background.svg");
+  const hasFloorOverlays = floorOverlays.length > 0;
   const enabledFloorSet = useMemo(() => new Set(enabledFloors), [enabledFloors]);
 
   useEffect(() => {
@@ -67,9 +69,7 @@ export function InteractiveBuilding({
           "relative flex shrink-0 items-center justify-center overflow-hidden rounded-[22px] border border-gold/30 bg-[linear-gradient(145deg,#0B0B0B_0%,#111111_48%,#151515_100%)] shadow-[0_32px_95px_rgba(0,0,0,0.68),0_0_0_1px_rgba(255,255,255,0.04)_inset,0_0_58px_rgba(212,175,55,0.12)_inset] transition duration-300 hover:border-gold/45",
           isFullscreen
             ? "flex-1"
-            : usesLashasPaths
-              ? "mx-auto aspect-[210/297] w-full max-w-[min(100%,46svh)] sm:max-w-[min(100%,50svh)] lg:max-w-[min(100%,54vh)]"
-              : "h-[58svh] min-h-[360px] w-full sm:h-[64svh] md:min-h-[500px] lg:h-[72vh] lg:max-h-[840px]",
+            : viewerClassName,
         )}
       >
         <div
@@ -86,7 +86,7 @@ export function InteractiveBuilding({
             className="h-full max-h-full w-full max-w-full object-contain"
           />
 
-          {usesLashasPaths ? (
+          {hasFloorOverlays ? (
             <svg
               viewBox={overlayViewBox}
               preserveAspectRatio="xMidYMid meet"
@@ -143,7 +143,7 @@ export function InteractiveBuilding({
         </div>
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(243,223,161,0.1),transparent_44%),linear-gradient(to_bottom,rgba(0,0,0,0.05),transparent_45%,rgba(0,0,0,0.16))]" />
 
-        {usesLashasPaths && hoveredFloor && (
+        {hasFloorOverlays && hoveredFloor && (
           <div className="pointer-events-none absolute left-1/2 top-5 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-black/85 px-3 py-1.5 text-xs font-medium text-white shadow-lg ring-1 ring-gold/40">
             {dict.apartmentFields.floor} {hoveredFloor}
           </div>
