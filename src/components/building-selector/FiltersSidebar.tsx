@@ -10,6 +10,7 @@ const ROOM_OPTIONS = [1, 2, 3, 4] as const;
 interface FiltersSidebarProps {
   floors: number[];
   availableByFloor: (floor: number) => number;
+  hasFloorData?: (floor: number) => boolean;
   selectedFloor: number | null;
   onSelectFloor: (floor: number | null) => void;
   roomsFilter: number | null;
@@ -27,6 +28,7 @@ interface FiltersSidebarProps {
 export function FiltersSidebar({
   floors,
   availableByFloor,
+  hasFloorData,
   selectedFloor,
   onSelectFloor,
   roomsFilter,
@@ -61,22 +63,28 @@ export function FiltersSidebar({
           {floors.map((floor) => {
             const isActive = selectedFloor === floor;
             const availableCount = availableByFloor(floor);
+            const isEnabled = hasFloorData ? hasFloorData(floor) : true;
             return (
               <button
                 key={floor}
                 type="button"
                 aria-pressed={isActive}
+                disabled={!isEnabled}
                 onClick={() => onSelectFloor(isActive ? null : floor)}
                 className={cn(
                   "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive ? "bg-gold text-black" : "text-white/70 hover:bg-white/5 hover:text-white",
+                  !isEnabled
+                    ? "cursor-not-allowed text-white/25"
+                    : isActive
+                      ? "bg-gold text-black"
+                      : "text-white/70 hover:bg-white/5 hover:text-white",
                 )}
               >
                 {floor}
                 <span
                   className={cn(
                     "h-1.5 w-1.5 rounded-full",
-                    availableCount > 0
+                    isEnabled && availableCount > 0
                       ? isActive
                         ? "bg-black/40"
                         : "bg-status-available"

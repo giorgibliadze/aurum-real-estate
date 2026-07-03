@@ -29,7 +29,7 @@ export function BuildingControls({
 
   return (
     <div className="flex items-center justify-center">
-      <div className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/60 px-1.5 py-1.5 backdrop-blur-xl">
+      <div className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-black/70 px-1.5 py-1.5 shadow-[0_12px_34px_rgba(0,0,0,0.38)] backdrop-blur-xl">
         <button
           type="button"
           onClick={onReset}

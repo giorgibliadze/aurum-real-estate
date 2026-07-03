@@ -23,11 +23,16 @@ export const ka = {
   },
   home: {
     heroEyebrow: "Aurum Residences",
-    heroTitle: "ცხოვრება, რომელიც შენობის ყოველ სართულზეა ღირსეული",
+    heroTitle: "კომფორტი შენი ცხოვრებისთვის",
     heroSubtitle:
       "შეისწავლეთ Aurum Residences ინტერაქტიული სქემით — აირჩიეთ სართული და ბლოკი, ნახეთ ხელმისაწვდომი ბინები რეალურ დროში.",
     ctaExplore: "ბინების ნახვა",
     ctaContact: "დაგვიკავშირდით",
+    heroStats: {
+      floors: "სართული",
+      apartments: "ბინა",
+      support: "კონსულტაცია",
+    },
     advantagesTitle: "რატომ Aurum Residences",
     advantagesSubtitle: "დეტალები, რომლებიც განსხვავებას ქმნის",
     galleryTitle: "შენობა გარედან",

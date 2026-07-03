@@ -30,6 +30,11 @@ export const ru = {
       "Изучите Aurum Residences с помощью интерактивной схемы здания — выберите этаж и блок, смотрите доступные квартиры в реальном времени.",
     ctaExplore: "Смотреть квартиры",
     ctaContact: "Связаться с нами",
+    heroStats: {
+      floors: "Этажей",
+      apartments: "Квартир",
+      support: "Консультация",
+    },
     advantagesTitle: "Почему Aurum Residences",
     advantagesSubtitle: "Детали, которые создают разницу",
     galleryTitle: "Здание снаружи",

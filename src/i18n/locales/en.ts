@@ -30,6 +30,11 @@ export const en = {
       "Explore Aurum Residences with our interactive building map — choose a floor and block, and see available apartments in real time.",
     ctaExplore: "Explore Apartments",
     ctaContact: "Contact Us",
+    heroStats: {
+      floors: "Floors",
+      apartments: "Apartments",
+      support: "Consultation",
+    },
     advantagesTitle: "Why Aurum Residences",
     advantagesSubtitle: "The details that make the difference",
     galleryTitle: "The Building, Outside",

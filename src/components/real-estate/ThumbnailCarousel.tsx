@@ -17,7 +17,7 @@ export function ThumbnailCarousel({ images, activeId, onSelect }: ThumbnailCarou
   const labels: Record<string, string> = dict.buildingImages;
 
   return (
-    <div className="flex gap-3 overflow-x-auto px-4 py-3 gold-scroll">
+    <div className="flex justify-center gap-3 overflow-x-auto px-1 py-1 gold-scroll">
       {images.map((image) => {
         const isActive = image.id === activeId;
         const label = labels[image.id] ?? image.id;
@@ -28,10 +28,10 @@ export function ThumbnailCarousel({ images, activeId, onSelect }: ThumbnailCarou
             aria-pressed={isActive}
             onClick={() => onSelect(image.id)}
             className={cn(
-              "relative h-16 w-28 shrink-0 overflow-hidden rounded-lg border-2 transition-all",
+              "relative h-16 w-28 shrink-0 overflow-hidden rounded-lg border transition-all",
               isActive
-                ? "border-gold shadow-[0_0_16px_rgba(212,175,55,0.5)]"
-                : "border-white/10 opacity-70 hover:opacity-100",
+                ? "border-gold shadow-[0_0_18px_rgba(212,175,55,0.48)]"
+                : "border-white/10 opacity-70 hover:border-gold/35 hover:opacity-100",
             )}
           >
             <Image

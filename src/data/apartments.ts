@@ -34,11 +34,12 @@ export interface Apartment {
   galleryImages: string[];
 }
 
+export const BUILDING_TOTAL_FLOORS = 13;
+
 /**
- * Pixel-verified against building-hero.jpg (dark-band + edge detection, not a
- * guess): the real facade shows exactly 9 visible balcony floor rows between
- * the roofline and the ground-floor canopy. Forcing more slices than that
- * would bisect real windows/balconies — see project memory for the analysis.
+ * Apartment records currently exist only for 9 floors. Keep this separate from
+ * the real building floor count so unavailable floors can be shown without
+ * inventing apartment data.
  */
 export const TOTAL_FLOORS = 9;
 
