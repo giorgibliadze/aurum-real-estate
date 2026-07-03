@@ -1,16 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
-import { BedDouble, Layers3, Ruler, Tag } from "lucide-react";
+import { BedDouble, Layers3, Ruler, SquareArrowOutUpRight, Tag } from "lucide-react";
 
 import {
   AURUM_BUILDING_NAME,
+  type AurumApartment,
   aurumApartmentsData,
   aurumFloorFilters,
   aurumStatusColors,
 } from "@/data/aurum/apartments";
-import type { Apartment } from "@/data/apartments";
 import { useI18n } from "@/i18n/context";
 import { formatArea, formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -19,16 +20,29 @@ interface AurumApartmentsListingProps {
   initialFloor: number | null;
 }
 
-function apartmentImage(apartment: Apartment) {
+function apartmentImage(apartment: AurumApartment) {
   return apartment.galleryImages[0] ?? apartment.floorPlanImage;
 }
 
-function AurumApartmentCard({ apartment }: { apartment: Apartment }) {
-  const { dict } = useI18n();
+function AurumApartmentCard({
+  apartment,
+  selectedFloor,
+}: {
+  apartment: AurumApartment;
+  selectedFloor: number | null;
+}) {
+  const { dict, locale } = useI18n();
   const statusColor = aurumStatusColors[apartment.status];
+  const detailsHref =
+    selectedFloor === null
+      ? `/${locale}/aurum/apartments/${apartment.id}`
+      : `/${locale}/aurum/apartments/${apartment.id}?floor=${selectedFloor}`;
 
   return (
-    <article className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_16px_46px_rgba(0,0,0,0.26)] transition-colors hover:border-gold/40">
+    <Link
+      href={detailsHref}
+      className="group block overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] shadow-[0_16px_46px_rgba(0,0,0,0.26)] transition-colors hover:border-gold/40"
+    >
       <div className="relative aspect-[4/3] overflow-hidden bg-black">
         <Image
           src={apartmentImage(apartment)}
@@ -84,8 +98,13 @@ function AurumApartmentCard({ apartment }: { apartment: Apartment }) {
             <dd>{dict.statuses[apartment.status]}</dd>
           </div>
         </dl>
+
+        <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-black transition-opacity group-hover:opacity-90">
+          <SquareArrowOutUpRight className="h-4 w-4" />
+          {dict.detailsCard.fullDetails}
+        </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -182,7 +201,11 @@ export function AurumApartmentsListing({ initialFloor }: AurumApartmentsListingP
 
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {visibleApartments.map((apartment) => (
-                <AurumApartmentCard key={apartment.id} apartment={apartment} />
+                <AurumApartmentCard
+                  key={apartment.id}
+                  apartment={apartment}
+                  selectedFloor={selectedFloor}
+                />
               ))}
             </div>
           </section>
