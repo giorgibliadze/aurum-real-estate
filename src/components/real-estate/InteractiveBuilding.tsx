@@ -4,13 +4,15 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useI18n } from "@/i18n/context";
-import { LASHAS_FLOOR_PATHS } from "@/data/lashasFloorPaths";
-import { BUILDING_TOTAL_FLOORS } from "@/data/apartments";
+import type { LashasFloorPath } from "@/data/lashasFloorPaths";
 import { cn } from "@/lib/utils";
 import { BuildingControls } from "./BuildingControls";
 
 interface InteractiveBuildingProps {
   imageSrc: string;
+  floorCount: number;
+  overlayViewBox: string;
+  floorOverlays: readonly LashasFloorPath[];
   selectedFloor: number | null;
   enabledFloors: number[];
   onSelectFloor: (floor: number) => void;
@@ -20,10 +22,12 @@ const MIN_ZOOM = 1;
 const MAX_ZOOM = 2;
 const ZOOM_STEP = 0.2;
 const FLOOR_HIGHLIGHT_COLOR = "#d4af37";
-const LASHAS_VIEW_BOX = "0 0 210 297";
 
 export function InteractiveBuilding({
   imageSrc,
+  floorCount,
+  overlayViewBox,
+  floorOverlays,
   selectedFloor,
   enabledFloors,
   onSelectFloor,
@@ -84,12 +88,12 @@ export function InteractiveBuilding({
 
           {usesLashasPaths ? (
             <svg
-              viewBox={LASHAS_VIEW_BOX}
+              viewBox={overlayViewBox}
               preserveAspectRatio="xMidYMid meet"
               className="absolute inset-0 h-full max-h-full w-full max-w-full"
             >
-              {LASHAS_FLOOR_PATHS.map(({ floor, d }) => {
-                if (floor < 1 || floor > BUILDING_TOTAL_FLOORS) return null;
+              {floorOverlays.map(({ floor, d }) => {
+                if (floor < 1 || floor > floorCount) return null;
 
                 const isEnabled = enabledFloorSet.has(floor);
                 const isSelected = selectedFloor === floor;

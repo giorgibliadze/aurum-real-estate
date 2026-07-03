@@ -2,20 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/i18n/context";
-import { BUILDING_TOTAL_FLOORS, type Apartment } from "@/data/apartments";
+import type { Apartment } from "@/data/apartments";
 
 interface FloorSelectorProps {
   apartments: Apartment[];
+  floors: readonly number[];
   selectedFloor: number | null;
   onSelectFloor: (floor: number | null) => void;
 }
 
-export function FloorSelector({ apartments, selectedFloor, onSelectFloor }: FloorSelectorProps) {
+export function FloorSelector({ apartments, floors, selectedFloor, onSelectFloor }: FloorSelectorProps) {
   const { dict } = useI18n();
-  const floors = Array.from(
-    { length: BUILDING_TOTAL_FLOORS },
-    (_, i) => BUILDING_TOTAL_FLOORS - i,
-  );
 
   return (
     <div>

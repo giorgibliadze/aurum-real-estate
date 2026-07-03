@@ -5,6 +5,13 @@ export const BUILDING_IMAGE_MODE_1 =
 export const BUILDING_IMAGE_MODE_2 =
   "/images/building-selector/direct-selection-meoreshavi-background.svg";
 export const MODE_2_VIEW_BOX = "-0.7937485 84.402084 210.77728 143.84155";
+export const DIRECT_SELECTOR_CONFIG = {
+  mode: "direct",
+  floorCount: 9,
+  floors: Array.from({ length: 9 }, (_, index) => 9 - index),
+  image: BUILDING_IMAGE_MODE_2,
+  overlayViewBox: MODE_2_VIEW_BOX,
+} as const;
 const BUILDING_SELECTOR_GALLERY_IMAGES = [
   BUILDING_IMAGE_MODE_1,
   BUILDING_IMAGE_MODE_2,
@@ -12,7 +19,6 @@ const BUILDING_SELECTOR_GALLERY_IMAGES = [
   "/images/building-selector/building-view-4.png",
 ];
 
-export const BUILDING_SELECTOR_TOTAL_FLOORS = 13;
 export const MODE_1_FLOOR_COUNT = 9;
 
 // Overlay coordinates are percentages in the SVG viewBox="0 0 100 100".

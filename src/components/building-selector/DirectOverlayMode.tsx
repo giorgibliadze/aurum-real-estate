@@ -9,12 +9,10 @@ import { DetailsPanel } from "./DetailsPanel";
 import { FiltersSidebar } from "./FiltersSidebar";
 import { FloorPlanSchematic } from "./FloorPlanSchematic";
 import {
-  BUILDING_IMAGE_MODE_2,
-  BUILDING_SELECTOR_TOTAL_FLOORS,
+  DIRECT_SELECTOR_CONFIG,
   MODE_2_APARTMENTS,
   MODE_2_AREA_BOUNDS,
   MODE_2_PRICE_BOUNDS,
-  MODE_2_VIEW_BOX,
 } from "./sample-data";
 import type { SampleStatus } from "./types";
 
@@ -36,14 +34,7 @@ export function DirectOverlayMode({ locale }: DirectOverlayModeProps) {
   );
   const [hoveredPathId, setHoveredPathId] = useState<string | null>(null);
 
-  const floors = useMemo(
-    () =>
-      Array.from(
-        { length: BUILDING_SELECTOR_TOTAL_FLOORS },
-        (_, i) => BUILDING_SELECTOR_TOTAL_FLOORS - i,
-      ),
-    [],
-  );
+  const floors = useMemo(() => [...DIRECT_SELECTOR_CONFIG.floors], []);
 
   const selectedApartment = useMemo(
     () => MODE_2_APARTMENTS.find((a) => a.id === selectedApartmentId) ?? null,
@@ -105,11 +96,11 @@ export function DirectOverlayMode({ locale }: DirectOverlayModeProps) {
           <div className="relative aspect-[210.77728/143.84155] w-full overflow-hidden rounded-[22px] border border-gold/25 bg-[linear-gradient(145deg,#0B0B0B_0%,#111111_48%,#151515_100%)] shadow-[0_30px_90px_rgba(0,0,0,0.62),0_0_0_1px_rgba(255,255,255,0.04)_inset,0_0_48px_rgba(212,175,55,0.1)_inset] transition duration-300 hover:border-gold/45 hover:shadow-[0_34px_105px_rgba(0,0,0,0.72),0_0_0_1px_rgba(255,255,255,0.05)_inset,0_0_64px_rgba(212,175,55,0.14)_inset]">
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
-                src={BUILDING_IMAGE_MODE_2}
+                src={DIRECT_SELECTOR_CONFIG.image}
                 alt="Aurum Residences — ბინების პირდაპირი შერჩევა"
                 fill
                 priority
-                unoptimized={BUILDING_IMAGE_MODE_2.endsWith(".svg")}
+                unoptimized={DIRECT_SELECTOR_CONFIG.image.endsWith(".svg")}
                 sizes="(min-width: 1024px) 65vw, 100vw"
                 className="h-full max-h-full w-full max-w-full object-contain"
               />
@@ -117,7 +108,7 @@ export function DirectOverlayMode({ locale }: DirectOverlayModeProps) {
               <DirectPathOverlay
                 paths={DIRECT_SELECTION_PATHS}
                 apartmentById={apartmentById}
-                viewBox={MODE_2_VIEW_BOX}
+                viewBox={DIRECT_SELECTOR_CONFIG.overlayViewBox}
                 dimmedIds={dimmedPathIds}
                 hoveredId={hoveredPathId}
                 selectedApartmentId={selectedApartmentId}

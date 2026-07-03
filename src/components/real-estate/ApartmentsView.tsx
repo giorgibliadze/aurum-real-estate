@@ -8,6 +8,7 @@ import { InteractiveBuilding } from "@/components/real-estate/InteractiveBuildin
 import { ThumbnailCarousel } from "@/components/real-estate/ThumbnailCarousel";
 import { useI18n } from "@/i18n/context";
 import { APARTMENTS } from "@/data/apartments";
+import { APARTMENTS_SELECTOR_CONFIG } from "@/data/apartmentsSelectorConfig";
 import { BUILDING_IMAGES, DEFAULT_BUILDING_IMAGE_ID } from "@/data/buildingImages";
 
 export function ApartmentsView() {
@@ -49,6 +50,7 @@ export function ApartmentsView() {
         <aside className="order-2 rounded-2xl border border-white/10 bg-black/45 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.42)] backdrop-blur-xl lg:order-1 lg:sticky lg:top-24">
           <FloorSelector
             apartments={APARTMENTS}
+            floors={APARTMENTS_SELECTOR_CONFIG.floors}
             selectedFloor={selectedFloor}
             onSelectFloor={setSelectedFloor}
           />
@@ -58,6 +60,9 @@ export function ApartmentsView() {
           <div>
             <InteractiveBuilding
               imageSrc={activeImage.src}
+              floorCount={APARTMENTS_SELECTOR_CONFIG.floorCount}
+              overlayViewBox={APARTMENTS_SELECTOR_CONFIG.overlayViewBox}
+              floorOverlays={APARTMENTS_SELECTOR_CONFIG.overlays}
               selectedFloor={selectedFloor}
               enabledFloors={floorsWithApartmentData}
               onSelectFloor={handleSelectFloorFromBuilding}
