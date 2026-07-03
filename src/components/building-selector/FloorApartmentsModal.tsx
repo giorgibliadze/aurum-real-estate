@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -19,6 +20,15 @@ export function FloorApartmentsModal({
   locale,
   onOpenChange,
 }: FloorApartmentsModalProps) {
+  const router = useRouter();
+
+  const handleViewAllApartments = () => {
+    if (floor === null) return;
+
+    onOpenChange(false);
+    router.push(`/${locale}/aurum/apartments?floor=${floor}`);
+  };
+
   return (
     <Dialog open={floor !== null} onOpenChange={onOpenChange}>
       {floor !== null && (
@@ -37,7 +47,7 @@ export function FloorApartmentsModal({
           <div className="px-6 pb-6">
             <button
               type="button"
-              onClick={() => onOpenChange(false)}
+              onClick={handleViewAllApartments}
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
             >
               ყველა ბინის ნახვა
